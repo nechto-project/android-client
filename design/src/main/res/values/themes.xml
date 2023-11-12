@@ -1,0 +1,49 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Theme.Nechto" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorSecondaryVariant">@color/secondary</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorSecondary</item>
+        <!-- Customize your theme here. -->
+        <item name="android:fontFamily">@font/noto_sans</item>
+    </style>
+
+    <style name="Nechto.Text.Title" parent="MaterialAlertDialog.Material3.Title.Text">
+        <item name="android:textFontWeight">600</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:fontFamily">@font/noto_sans</item>
+    </style>
+
+    <style name="Nechto.Button.Primary" parent="ShapeAppearanceOverlay.Material3.Button">
+        <item name="android:backgroundTint">@color/primary</item>
+        <item name="rippleColor">@color/primary_ripple</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/noto_sans</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="android:textFontWeight">600</item>
+    </style>
+
+    <style name="Nechto.Button.Secondary" parent="ShapeAppearanceOverlay.Material3.Button">
+        <item name="android:backgroundTint">@color/secondary</item>
+        <item name="rippleColor">@color/secondary_ripple</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/noto_sans</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="android:textFontWeight">600</item>
+    </style>
+
+    <style name="Nechto.Button.BackFAB" parent="ShapeAppearanceOverlay.Material3.FloatingActionButton">
+        <item name="android:backgroundTint">@color/secondary</item>
+        <item name="rippleColor">@color/secondary_ripple</item>
+        <item name="tint">@color/white</item>
+        <item name="android:src">@drawable/baseline_arrow_back_24</item>
+    </style>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="OutlinedFrameLayout">
+        <attr name="outlineColor" format="color"/>
+        <attr name="outlineWidth" format="dimension"/>
+        <attr name="outlineRadius" format="dimension"/>
+    </declare-styleable>
+</resources>

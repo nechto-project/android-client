@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.github.radkoff26.design.OutlinedFrameLayout
+        android:id="@+id/buttonArea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="3dp"
+        app:outlineColor="@color/white"
+        app:outlineRadius="16dp"
+        app:outlineWidth="1dp">
+
+        <TextView
+            android:id="@+id/genre_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lineHeight="16sp"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+    </com.github.radkoff26.design.OutlinedFrameLayout>
+
+</FrameLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/home_fragment">
+
+    <fragment
+        android:id="@+id/home_fragment"
+        android:name="com.github.radkoff26.nechto.ui.home.HomeFragment"
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/from_home_to_genre_choices"
+            app:destination="@id/genre_choice_fragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/genre_choice_fragment"
+        tools:layout="@layout/fragment_genre_choice"
+        android:name="com.github.radkoff26.nechto.ui.genre_choice.GenreChoiceFragment"/>
+
+</navigation>

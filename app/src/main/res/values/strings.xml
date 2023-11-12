@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Nechto</string>
+    <string name="choose_genre">Choose genres</string>
+    <string name="back_button">Back Button</string>
+    <string name="hello">Hello!</string>
+    <string name="join_room">Join room</string>
+    <string name="start_match">Start match</string>
+    <string name="continue_text">Continue</string>
+</resources>
