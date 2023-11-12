@@ -16,6 +16,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private fun FragmentHomeBinding.initUI() {
         startMatchButton.setOnClickListener {
+
             findNavController().navigate(R.id.from_home_to_genre_choices)
         }
     }

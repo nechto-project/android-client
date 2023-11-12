@@ -38,10 +38,10 @@ class GenreChoiceFragment :
 
     companion object {
         private val GENRES = listOf(
-            "Приключения",
-            "Драма",
-            "Комедия",
-            "Мультфильм"
+            "Adventure",
+            "Drama",
+            "Comedy",
+            "Cartoon"
         )
     }
 }

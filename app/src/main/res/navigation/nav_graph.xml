@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
     app:startDestination="@id/home_fragment">
 
     <fragment
@@ -12,12 +12,16 @@
 
         <action
             android:id="@+id/from_home_to_genre_choices"
-            app:destination="@id/genre_choice_fragment"/>
+            app:destination="@id/genre_choice_fragment"
+            app:enterAnim="@anim/fragment_appear_animation"
+            app:exitAnim="@anim/fragment_vanish_animation"
+            app:popEnterAnim="@anim/fragment_pop_appear_animation"
+            app:popExitAnim="@anim/fragment_pop_vanish_animation" />
     </fragment>
 
     <fragment
         android:id="@+id/genre_choice_fragment"
-        tools:layout="@layout/fragment_genre_choice"
-        android:name="com.github.radkoff26.nechto.ui.genre_choice.GenreChoiceFragment"/>
+        android:name="com.github.radkoff26.nechto.ui.genre_choice.GenreChoiceFragment"
+        tools:layout="@layout/fragment_genre_choice" />
 
 </navigation>
