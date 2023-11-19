@@ -34,6 +34,9 @@ class GenreChoiceFragment :
         backButton.setOnClickListener {
             findNavController().popBackStack()
         }
+        continueButton.setOnClickListener {
+            findNavController().navigate(R.id.from_genre_choices_to_room)
+        }
     }
 
     companion object {

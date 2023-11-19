@@ -47,6 +47,9 @@ dependencies {
 
     implementation core_ktx
 
+    implementation lifecycle.viewmodel
+    implementation lifecycle.runtime
+
     implementation material.main
 
     implementation navigation.fragment

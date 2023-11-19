@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/home_fragment">
+    app:startDestination="@id/match_fragment">
 
     <fragment
         android:id="@+id/home_fragment"
@@ -15,13 +15,38 @@
             app:destination="@id/genre_choice_fragment"
             app:enterAnim="@anim/fragment_appear_animation"
             app:exitAnim="@anim/fragment_vanish_animation"
-            app:popEnterAnim="@anim/fragment_pop_appear_animation"
             app:popExitAnim="@anim/fragment_pop_vanish_animation" />
     </fragment>
 
     <fragment
         android:id="@+id/genre_choice_fragment"
         android:name="com.github.radkoff26.nechto.ui.genre_choice.GenreChoiceFragment"
-        tools:layout="@layout/fragment_genre_choice" />
+        tools:layout="@layout/fragment_genre_choice">
+
+        <action
+            android:id="@+id/from_genre_choices_to_room"
+            app:destination="@id/room_fragment"
+            app:enterAnim="@anim/fragment_appear_animation"
+            app:exitAnim="@anim/fragment_vanish_animation"
+            app:popExitAnim="@anim/fragment_pop_vanish_animation" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/room_fragment"
+        android:name="com.github.radkoff26.nechto.ui.room.RoomFragment"
+        tools:layout="@layout/fragment_room">
+
+        <action
+            android:id="@+id/from_room_to_match"
+            app:destination="@id/match_fragment"
+            app:enterAnim="@anim/fragment_appear_animation"
+            app:exitAnim="@anim/fragment_vanish_animation"
+            app:popExitAnim="@anim/fragment_pop_vanish_animation" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/match_fragment"
+        android:name="com.github.radkoff26.nechto.ui.match.MatchFragment"
+        tools:layout="@layout/fragment_match" />
 
 </navigation>

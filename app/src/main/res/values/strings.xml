@@ -6,4 +6,10 @@
     <string name="join_room">Join room</string>
     <string name="start_match">Start match</string>
     <string name="continue_text">Continue</string>
+    <string name="participants">Participants</string>
+    <string name="advice_before_play">You can invite your friends to play with you or play alone</string>
+    <string name="room_code">Room code</string>
+    <string name="invite">Invite</string>
+    <string name="code_copied">Code was copied to clipboard!</string>
+    <string name="start">Start</string>
 </resources>
