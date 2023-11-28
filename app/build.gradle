@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlinx-serialization'
 }
 
 android {
@@ -47,6 +46,8 @@ dependencies {
 
     implementation core_ktx
 
+    implementation gson
+
     implementation lifecycle.viewmodel
     implementation lifecycle.runtime
 
@@ -57,9 +58,7 @@ dependencies {
 
     implementation network.okhttp
     implementation network.retrofit
+    implementation network.gson
 
-    implementation serialization.core
-    implementation serialization.json
-    implementation serialization.json_jvm
-    implementation serialization.stdlib
+    implementation picasso.lib
 }

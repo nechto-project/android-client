@@ -1,39 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.faltenreich.skeletonlayout.SkeletonLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootSkeleton"
+    style="@style/Nechto.Skeleton"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/matchMotionLayout"
-    app:layoutDescription="@xml/fragment_match_scene"
     tools:context=".ui.match.MatchFragment">
 
-    <FrameLayout
-        android:id="@+id/bottomCard"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/secondary">
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/matchMotionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutDescription="@xml/fragment_match_scene">
 
-        <TextView
-            android:id="@+id/movieNameOnBottom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Nechto.Text.Title"
-            android:layout_gravity="center" />
-    </FrameLayout>
+        <FrameLayout
+            android:id="@+id/bottomCard"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/black">
 
-    <FrameLayout
-        android:id="@+id/topCard"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/secondary">
+            <include
+                android:id="@+id/bottomMovie"
+                layout="@layout/movie_layout" />
+        </FrameLayout>
 
-        <TextView
-            android:id="@+id/movieNameOnTop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Nechto.Text.Title"
-            android:layout_gravity="center" />
-    </FrameLayout>
+        <com.faltenreich.skeletonlayout.SkeletonLayout
+            android:id="@+id/topCard"
+            style="@style/Nechto.Skeleton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/black">
 
-</androidx.constraintlayout.motion.widget.MotionLayout>
+            <include
+                android:id="@+id/topMovie"
+                layout="@layout/movie_layout" />
+        </com.faltenreich.skeletonlayout.SkeletonLayout>
+
+    </androidx.constraintlayout.motion.widget.MotionLayout>
+
+</com.faltenreich.skeletonlayout.SkeletonLayout>

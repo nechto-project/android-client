@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/movieCover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/harry_potter" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_semi_transparent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guidelineHorizontal">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineVerticalStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="24dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineVerticalEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:guidelineUseRtl="true"
+            app:layout_constraintGuide_end="24dp" />
+
+        <TextView
+            android:id="@+id/movieTitle"
+            style="@style/Nechto.Text.Title.Small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalEnd"
+            app:layout_constraintStart_toStartOf="@+id/guidelineVerticalStart"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Title of Movie" />
+
+        <TextView
+            android:id="@+id/movieScore"
+            style="@style/Nechto.Text.Paragraph.Light"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalEnd"
+            app:layout_constraintStart_toStartOf="@+id/guidelineVerticalStart"
+            app:layout_constraintTop_toBottomOf="@id/movieTitle"
+            tools:text="8.5" />
+
+        <TextView
+            android:id="@+id/movieGenres"
+            style="@style/Nechto.Text.Paragraph.Light"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalEnd"
+            app:layout_constraintStart_toStartOf="@+id/guidelineVerticalStart"
+            app:layout_constraintTop_toBottomOf="@id/movieScore"
+            tools:text="Detective - Thriller" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/watchTrailerButton"
+            style="@style/Nechto.Button.Primary.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/trailer"
+            app:icon="@drawable/baseline_play_arrow_24"
+            app:iconGravity="end"
+            app:layout_constraintStart_toStartOf="@+id/guidelineVerticalStart"
+            app:layout_constraintTop_toBottomOf="@+id/movieGenres" />
+
+        <LinearLayout
+            android:id="@+id/choiceButtonsContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalEnd"
+            app:layout_constraintStart_toStartOf="@+id/guidelineVerticalStart"
+            app:layout_constraintTop_toBottomOf="@+id/watchTrailerButton">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/rejectMovieButton"
+                style="@style/Nechto.Button.Reject.Icon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:text="@string/reject"
+                app:icon="@drawable/baseline_close_24"
+                app:iconGravity="textStart"
+                app:iconPadding="2dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/acceptMovieButton"
+                style="@style/Nechto.Button.Primary.Icon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/accept"
+                app:icon="@drawable/baseline_check_24"
+                app:iconGravity="textStart"
+                app:iconPadding="2dp" />
+
+        </LinearLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/grey"
+            android:paddingHorizontal="24dp"
+            android:paddingVertical="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/choiceButtonsContainer">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/descriptionTitle"
+                    style="@style/Nechto.Text.Paragraph.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/movie_description"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/movieDescription"
+                    style="@style/Nechto.Text.Paragraph.Light"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/descriptionTitle"
+                    tools:text="Big big description" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

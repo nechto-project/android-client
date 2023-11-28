@@ -36,4 +36,6 @@ dependencies {
     implementation constraint_layout
 
     implementation material.main
+
+    api skeleton.ui
 }

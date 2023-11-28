@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
@@ -13,6 +14,7 @@ abstract class BaseFragment<T : ViewBinding>(@LayoutRes private val layoutId: In
     protected val binding: T
         get() = _binding!!
 
+    @CallSuper
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,6 +27,12 @@ abstract class BaseFragment<T : ViewBinding>(@LayoutRes private val layoutId: In
         onCreateView()
 
         return binding.root
+    }
+
+    @CallSuper
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 
     open fun onCreateView() {}

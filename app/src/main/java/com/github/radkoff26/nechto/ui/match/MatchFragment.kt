@@ -1,20 +1,28 @@
 package com.github.radkoff26.nechto.ui.match
 
-import android.graphics.Color
 import android.view.View
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.motion.widget.TransitionAdapter
 import androidx.lifecycle.ViewModelProvider
 import com.github.radkoff26.base.BaseFragment
+import com.github.radkoff26.nechto.NechtoApplication
 import com.github.radkoff26.nechto.R
+import com.github.radkoff26.nechto.data.Genre
+import com.github.radkoff26.nechto.data.Movie
 import com.github.radkoff26.nechto.databinding.FragmentMatchBinding
+import com.github.radkoff26.nechto.databinding.MovieLayoutBinding
 import com.github.radkoff26.nechto.extensions.toastMessage
+import com.squareup.picasso.Picasso
 
 class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match) {
     private lateinit var viewModel: MatchViewModel
 
     override fun onCreateView() {
-        viewModel = ViewModelProvider(this)[MatchViewModel::class.java]
+        val dataSource = (requireActivity().application as NechtoApplication).movieDataSource
+        viewModel = ViewModelProvider(
+            this,
+            MatchViewModel.ViewModelFactory(dataSource)
+        )[MatchViewModel::class.java]
         observeViewModel()
         binding.initUI()
     }
@@ -23,6 +31,8 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
         viewModel.matchFragmentStateLiveData.observe(viewLifecycleOwner) {
             if (it == MatchFragmentState.FAILED) {
                 requireContext().toastMessage("Failed to load movie!")
+            } else if (it == MatchFragmentState.NOT_LOADED) {
+                binding.rootSkeleton.showSkeleton()
             }
         }
         viewModel.currentMovieLiveData.observe(viewLifecycleOwner) {
@@ -31,16 +41,39 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
                 return@observe
             }
             binding.bindMovie(it)
+            binding.showOriginal()
         }
     }
 
     private fun FragmentMatchBinding.bindMovie(moviesPair: MoviesPair) {
-        topCard.setBackgroundColor(Color.parseColor(moviesPair.topMovie.poster))
-        movieNameOnTop.text = moviesPair.topMovie.name
-        if (moviesPair.bottomMovie != null) {
-            bottomCard.setBackgroundColor(Color.parseColor(moviesPair.bottomMovie.poster))
+        topMovie.bindAsTopMovie(moviesPair.topMovie)
+        bottomMovie.bindAsBottomMovie(moviesPair.bottomMovie)
+        rootSkeleton.showOriginal()
+    }
+
+    private fun MovieLayoutBinding.bindAsTopMovie(movie: Movie) {
+        acceptMovieButton.setOnClickListener {
+            binding.matchMotionLayout.transitionToState(R.id.like)
         }
-        movieNameOnBottom.text = moviesPair.bottomMovie?.name ?: "-"
+        rejectMovieButton.setOnClickListener {
+            binding.matchMotionLayout.transitionToState(R.id.dislike)
+        }
+        bindCommonMovie(movie)
+    }
+
+    private fun MovieLayoutBinding.bindAsBottomMovie(movie: Movie?) {
+        movie ?: return
+        bindCommonMovie(movie)
+    }
+
+    private fun MovieLayoutBinding.bindCommonMovie(movie: Movie) {
+        if (movie.poster != null) {
+            Picasso.get().load(movie.poster).into(movieCover)
+        }
+        movieTitle.text = movie.name
+        movieDescription.text = movie.description
+        movieGenres.text = movie.genres.joinToString(separator = " - ", transform = Genre::name)
+        movieScore.text = movie.score.toString()
     }
 
     private fun FragmentMatchBinding.initUI() {
@@ -49,25 +82,25 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
                 when (currentId) {
                     R.id.offScreenLike -> {
                         viewModel.likeMovie()
-                        matchMotionLayout.resetAnimationFromLike()
+                        setSkeletonLoadingAndResetAnimation()
                     }
                     R.id.offScreenDislike -> {
                         viewModel.dislikeMovie()
-                        matchMotionLayout.resetAnimationFromDislike()
+                        setSkeletonLoadingAndResetAnimation()
                     }
                 }
             }
         })
     }
 
-    private fun MotionLayout.resetAnimationFromDislike() {
-        progress = 0f
-        setTransition(R.id.steady, R.id.dislike)
+    private fun FragmentMatchBinding.setSkeletonLoadingAndResetAnimation() {
+        topCard.showSkeleton()
+        matchMotionLayout.progress = 0f
+        matchMotionLayout.setTransition(R.id.steady, R.id.dislike)
     }
 
-    private fun MotionLayout.resetAnimationFromLike() {
-        progress = 0f
-        setTransition(R.id.steady, R.id.like)
+    private fun FragmentMatchBinding.showOriginal() {
+        topCard.showOriginal()
     }
 
     override fun createBinding(view: View): FragmentMatchBinding = FragmentMatchBinding.bind(view)

@@ -1,14 +1,12 @@
 package com.github.radkoff26.nechto.ui.match
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.github.radkoff26.nechto.data.Movie
+import com.github.radkoff26.nechto.data_source.MovieDataSource
 import kotlinx.coroutines.*
 
-class MatchViewModel : ViewModel() {
+class MatchViewModel(private val movieDataSource: MovieDataSource) : ViewModel() {
     private val moviesCurrentBatchLiveData: MoviesPairLiveData =
         MoviesPairLiveData(this::loadMovies)
     val currentMovieLiveData: LiveData<MoviesPair?> = moviesCurrentBatchLiveData
@@ -55,7 +53,7 @@ class MatchViewModel : ViewModel() {
         matchFragmentStateMutableLiveData.postValue(MatchFragmentState.NOT_LOADED)
         try {
             // Requesting data
-            val data = requestData()
+            val data = movieDataSource.getMovies()
             matchFragmentStateMutableLiveData.postValue(MatchFragmentState.LOADED)
             data
         } catch (t: Throwable) {
@@ -65,44 +63,10 @@ class MatchViewModel : ViewModel() {
         }
     }
 
-    private suspend fun requestData(): List<Movie> = withContext(Dispatchers.IO) {
-        listOf(
-            Movie(
-                1,
-                "Movie 1",
-                "",
-                5.0,
-                "#cccccc",
-                emptyList(),
-                emptyList()
-            ),
-            Movie(
-                2,
-                "Movie 2",
-                "",
-                5.0,
-                "#ff0000",
-                emptyList(),
-                emptyList()
-            ),
-            Movie(
-                3,
-                "Movie 3",
-                "",
-                5.0,
-                "#00ff00",
-                emptyList(),
-                emptyList()
-            ),
-            Movie(
-                4,
-                "Movie 4",
-                "",
-                5.0,
-                "#0000ff",
-                emptyList(),
-                emptyList()
-            )
-        )
+    @Suppress("UNCHECKED_CAST")
+    class ViewModelFactory(private val dataSource: MovieDataSource) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return MatchViewModel(dataSource) as T
+        }
     }
 }

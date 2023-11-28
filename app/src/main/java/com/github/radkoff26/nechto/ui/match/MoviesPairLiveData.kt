@@ -8,6 +8,9 @@ typealias MoviesFetcher = suspend () -> Deferred<List<Movie>>
 
 class MoviesPairLiveData(private val moviesFetcher: MoviesFetcher) : LiveData<MoviesPair?>() {
     private var batch: List<Movie> = emptyList()
+
+    @Volatile
+    private var loaded = false
     private var cursor: Int = -1
 
     init {
@@ -15,14 +18,23 @@ class MoviesPairLiveData(private val moviesFetcher: MoviesFetcher) : LiveData<Mo
     }
 
     suspend fun nextMovie() {
+        if (!loaded) {
+            fetchNewMovies()
+            return
+        }
         try {
             cursor++
             if (cursor == batch.size) {
                 fetchNewMovies()
+                return
             }
         } catch (t: Throwable) {
             postValue(null)
         }
+        postPair()
+    }
+
+    private fun postPair() {
         val pair = MoviesPair(
             batch[cursor],
             if (cursor + 1 == batch.size) {
@@ -36,6 +48,10 @@ class MoviesPairLiveData(private val moviesFetcher: MoviesFetcher) : LiveData<Mo
 
     private suspend fun fetchNewMovies() {
         batch = moviesFetcher.invoke().await()
+        loaded = true
         cursor = 0
+        if (batch.isNotEmpty()) {
+            postPair()
+        }
     }
 }

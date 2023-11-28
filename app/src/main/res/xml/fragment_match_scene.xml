@@ -42,7 +42,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginEnd="300dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintWidth_percent="0.7" />
+                app:layout_constraintWidth_percent="0.8" />
 
             <Transform
                 android:scaleX="0.95"
@@ -68,7 +68,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="300dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintWidth_percent="0.7" />
+                app:layout_constraintWidth_percent="0.8" />
 
             <Transform
                 android:scaleX="0.95"
@@ -94,7 +94,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="300dp"
                 app:layout_constraintStart_toEndOf="parent"
-                app:layout_constraintWidth_percent="0.7" />
+                app:layout_constraintWidth_percent="0.8" />
 
             <Transform
                 android:scaleX="0.9"
@@ -120,7 +120,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginEnd="300dp"
                 app:layout_constraintEnd_toStartOf="parent"
-                app:layout_constraintWidth_percent="0.7" />
+                app:layout_constraintWidth_percent="0.8" />
 
             <Transform
                 android:scaleX="0.9"

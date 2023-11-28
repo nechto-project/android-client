@@ -22,33 +22,58 @@
         <item name="android:fontFamily">@font/noto_sans</item>
     </style>
 
+    <style name="Nechto.Text.Title.Small" parent="Nechto.Text.Title">
+        <item name="android:textSize">28sp</item>
+    </style>
+
     <style name="Nechto.Text.Paragraph" parent="Theme.Nechto">
         <item name="android:textFontWeight">500</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="Nechto.Text.Paragraph.Light" parent="Nechto.Text.Paragraph">
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Nechto.Text.Paragraph.Medium" parent="Nechto.Text.Paragraph">
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
     <style name="Theme.Button" parent="ShapeAppearanceOverlay.Material3.Button">
         <item name="android:capitalize">sentences</item>
         <item name="textAllCaps">false</item>
+        <item name="android:fontFamily">@font/noto_sans</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="android:textFontWeight">600</item>
     </style>
 
     <style name="Nechto.Button.Primary" parent="Theme.Button">
         <item name="android:backgroundTint">@color/primary</item>
         <item name="rippleColor">@color/primary_ripple</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily">@font/noto_sans</item>
-        <item name="cornerRadius">16dp</item>
-        <item name="android:textFontWeight">600</item>
+    </style>
+
+    <style name="Nechto.Button.Reject" parent="Theme.Button">
+        <item name="android:backgroundTint">@color/red</item>
+        <item name="rippleColor">@color/red_ripple</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="Nechto.Button.Reject.Icon" parent="Nechto.Button.Reject">
+        <item name="iconTint">@color/white</item>
+    </style>
+
+    <style name="Nechto.Button.Primary.Icon" parent="Nechto.Button.Primary">
+        <item name="iconTint">@color/black</item>
     </style>
 
     <style name="Nechto.Button.Secondary" parent="Theme.Button">
         <item name="android:backgroundTint">@color/secondary</item>
         <item name="rippleColor">@color/secondary_ripple</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:fontFamily">@font/noto_sans</item>
-        <item name="cornerRadius">16dp</item>
-        <item name="android:textFontWeight">600</item>
     </style>
 
     <style name="Nechto.Button.BackFAB" parent="ShapeAppearanceOverlay.Material3.FloatingActionButton">
@@ -58,7 +83,10 @@
         <item name="android:src">@drawable/baseline_arrow_back_24</item>
     </style>
 
-    <style name="Nechto.EditText.Filled" parent="ThemeOverlay.Material3.TextInputEditText.FilledBox">
-
+    <style name="Nechto.Skeleton" parent="Theme.Nechto">
+        <item name="shimmerColor">@color/secondary_ripple</item>
+        <item name="maskColor">@color/secondary</item>
+        <item name="shimmerAngle">45</item>
+        <item name="shimmerDurationInMillis">1000</item>
     </style>
 </resources>
