@@ -2,9 +2,8 @@ package com.github.radkoff26.nechto.ui.match
 
 import androidx.lifecycle.LiveData
 import com.github.radkoff26.nechto.data.Movie
-import kotlinx.coroutines.Deferred
 
-typealias MoviesFetcher = suspend () -> Deferred<List<Movie>>
+typealias MoviesFetcher = suspend () -> List<Movie>
 
 class MoviesPairLiveData(private val moviesFetcher: MoviesFetcher) : LiveData<MoviesPair?>() {
     private var batch: List<Movie> = emptyList()
@@ -47,7 +46,7 @@ class MoviesPairLiveData(private val moviesFetcher: MoviesFetcher) : LiveData<Mo
     }
 
     private suspend fun fetchNewMovies() {
-        batch = moviesFetcher.invoke().await()
+        batch = moviesFetcher.invoke()
         loaded = true
         cursor = 0
         if (batch.isNotEmpty()) {

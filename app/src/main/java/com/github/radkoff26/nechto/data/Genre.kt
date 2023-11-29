@@ -1,6 +1,10 @@
 package com.github.radkoff26.nechto.data
 
+import com.google.gson.annotations.SerializedName
+
 data class Genre(
-    val genreId: Int,
-    val name: String
+    @SerializedName("genreId")
+    val id: Int,
+    @SerializedName("name")
+    val title: String
 )

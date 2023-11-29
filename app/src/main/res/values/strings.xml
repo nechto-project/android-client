@@ -9,11 +9,24 @@
     <string name="participants">Participants</string>
     <string name="advice_before_play">You can invite your friends to play with you or play alone</string>
     <string name="room_code">Room code</string>
-    <string name="invite">Invite</string>
+    <string name="poster_url">Poster Url</string>
+    <string name="room_not_exists">Room does not exist!</string>
+    <string name="invite" translatable="false">Invite</string>
     <string name="code_copied">Code was copied to clipboard!</string>
     <string name="start">Start</string>
     <string name="trailer">Trailer</string>
     <string name="reject">Reject</string>
     <string name="accept">Accept</string>
     <string name="movie_description">Movie description</string>
+    <string name="error_while_loading">Error occurred while loading!</string>
+    <string name="failed_to_create_room">Failed to create room!</string>
+    <string name="no_genres_chosen">No genres were chosen!</string>
+    <string name="join">Join</string>
+    <string name="is_leader">Is leader</string>
+    <string name="participants_count" formatted="true">Participants: %d/2</string>
+    <string name="match">Match!</string>
+    <string name="finish">Finish</string>
+    <string name="movie_title">Movie Title</string>
+    <string name="unexpected_error">Unexpected error!</string>
+    <string name="failed_to_load_movie">Failed to load movie!</string>
 </resources>

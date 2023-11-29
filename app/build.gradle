@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id "com.google.dagger.hilt.android"
+    id "kotlin-kapt"
 }
 
 android {
@@ -46,7 +48,12 @@ dependencies {
 
     implementation core_ktx
 
+    implementation fragmentKtx
+
     implementation gson
+
+    implementation hiltDagger.android
+    kapt hiltDagger.compiler
 
     implementation lifecycle.viewmodel
     implementation lifecycle.runtime
@@ -61,4 +68,8 @@ dependencies {
     implementation network.gson
 
     implementation picasso.lib
+}
+
+kapt {
+    correctErrorTypes true
 }

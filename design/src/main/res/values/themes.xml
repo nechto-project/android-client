@@ -89,4 +89,16 @@
         <item name="shimmerAngle">45</item>
         <item name="shimmerDurationInMillis">1000</item>
     </style>
+
+    <style name="Nechto.ProgressBar" parent="Theme.Nechto">
+        <item name="android:indeterminateBehavior">repeat</item>
+        <item name="android:indeterminateDuration">500</item>
+        <item name="android:indeterminate">true</item>
+        <item name="indicatorColor">?colorPrimary</item>
+        <item name="indicatorDirectionCircular">clockwise</item>
+        <item name="indicatorSize">48dp</item>
+        <item name="trackColor">?colorSecondary</item>
+        <item name="trackCornerRadius">2dp</item>
+        <item name="trackThickness">4dp</item>
+    </style>
 </resources>

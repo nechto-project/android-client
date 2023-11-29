@@ -7,12 +7,14 @@ import androidx.annotation.ColorInt
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.github.radkoff26.nechto.R
+import com.github.radkoff26.nechto.data.Genre
 import com.github.radkoff26.nechto.databinding.ItemGenreBinding
 
 class GenresListAdapter(
-    genres: MutableList<String>
+    genres: List<Genre>
 ) : RecyclerView.Adapter<GenresListAdapter.GenreViewHolder>() {
-    private val genresList: MutableList<GenreInList> = genres.map { GenreInList(it) }.toMutableList()
+    private val genresList: MutableList<GenreInList> =
+        genres.map { GenreInList(it) }.toMutableList()
 
     inner class GenreViewHolder(view: View) : ViewHolder(view) {
         private var binding: ItemGenreBinding = ItemGenreBinding.bind(view)
@@ -20,7 +22,7 @@ class GenresListAdapter(
         fun bind(position: Int) {
             val genre = genresList[position]
             with(binding) {
-                genreTitle.text = genre.genre
+                genreTitle.text = genre.genre.title
                 updateColor(genre)
                 buttonArea.setOnClickListener {
                     toggleChosenOn(position)
@@ -58,6 +60,9 @@ class GenresListAdapter(
     override fun onBindViewHolder(holder: GenreViewHolder, position: Int) {
         holder.bind(position)
     }
+
+    fun getSelectedGenres(): List<Genre> =
+        genresList.filter(GenreInList::isChosen).map(GenreInList::genre)
 
     private fun toggleChosenOn(position: Int) {
         val genre = genresList[position]

@@ -1,12 +1,32 @@
 package com.github.radkoff26.nechto.ui.match
 
-import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.github.radkoff26.nechto.PollingWorker
 import com.github.radkoff26.nechto.data.Movie
-import com.github.radkoff26.nechto.data_source.MovieDataSource
-import kotlinx.coroutines.*
+import com.github.radkoff26.nechto.exceptions.LoadingException
+import com.github.radkoff26.nechto.repository.MovieRepository
+import com.github.radkoff26.nechto.repository.RoomRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class MatchViewModel(private val movieDataSource: MovieDataSource) : ViewModel() {
+@HiltViewModel
+class MatchViewModel @Inject constructor(
+    private val movieRepository: MovieRepository,
+    private val roomRepository: RoomRepository
+) : ViewModel() {
+    private lateinit var roomId: String
+    private var isLeader: Boolean = false
+    private var failCallback: ((severe: Boolean) -> Unit)? = null
+    private var matchCallback: ((movie: Movie) -> Unit)? = null
+
+    private val worker = PollingWorker(this::checkForMatch)
+
     private val moviesCurrentBatchLiveData: MoviesPairLiveData =
         MoviesPairLiveData(this::loadMovies)
     val currentMovieLiveData: LiveData<MoviesPair?> = moviesCurrentBatchLiveData
@@ -15,58 +35,105 @@ class MatchViewModel(private val movieDataSource: MovieDataSource) : ViewModel()
         MutableLiveData(MatchFragmentState.NOT_LOADED)
     val matchFragmentStateLiveData: LiveData<MatchFragmentState> = matchFragmentStateMutableLiveData
 
+    fun init(
+        roomId: String,
+        isLeader: Boolean,
+        failCallback: (severe: Boolean) -> Unit,
+        matchCallback: (movie: Movie) -> Unit
+    ) {
+        this.roomId = roomId
+        this.isLeader = isLeader
+        this.failCallback = failCallback
+        this.matchCallback = matchCallback
+    }
+
+    fun startWatchingMatch() {
+        worker.start()
+    }
+
+    fun stopWatchingMatch() {
+        worker.stop()
+    }
+
     fun nextMovie() {
         viewModelScope.launch(Dispatchers.IO) {
             moviesCurrentBatchLiveData.nextMovie()
         }
     }
 
-    fun likeMovie() {
-        // Take id of the current movie and post it as liked
-        requestLikeMovie()
-        // Proceed
-        nextMovie()
-    }
-
     fun dislikeMovie() {
-        // Take id of the current movie and post it as disliked
-        requestDislikeMovie()
-        // Proceed
-        nextMovie()
-    }
-
-    private fun requestLikeMovie() {
-        Log.d(
-            "ViewModelTAG",
-            "requestLikeMovie: liked ${moviesCurrentBatchLiveData.value?.topMovie?.name}"
-        )
-    }
-
-    private fun requestDislikeMovie() {
-        Log.d(
-            "ViewModelTAG",
-            "requestLikeMovie: disliked ${moviesCurrentBatchLiveData.value?.topMovie?.name}"
-        )
-    }
-
-    private suspend fun loadMovies(): Deferred<List<Movie>> = viewModelScope.async {
-        matchFragmentStateMutableLiveData.postValue(MatchFragmentState.NOT_LOADED)
-        try {
-            // Requesting data
-            val data = movieDataSource.getMovies()
-            matchFragmentStateMutableLiveData.postValue(MatchFragmentState.LOADED)
-            data
-        } catch (t: Throwable) {
-            // Possibly log
-            matchFragmentStateMutableLiveData.postValue(MatchFragmentState.FAILED)
-            throw RuntimeException(t)
+        val movieId = currentMovieLiveData.value?.topMovie?.movieId
+        if (movieId == null) {
+            failCallback?.invoke(false)
+            return
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                movieRepository.dislikeMovie(
+                    roomId,
+                    movieId,
+                    isLeader
+                )
+                moviesCurrentBatchLiveData.nextMovie()
+            } catch (e: LoadingException) {
+                val isSevere = e.errorCode == 404
+                failCallback?.invoke(isSevere)
+            }
         }
     }
 
-    @Suppress("UNCHECKED_CAST")
-    class ViewModelFactory(private val dataSource: MovieDataSource) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return MatchViewModel(dataSource) as T
+    fun likeMovie() {
+        val movieId = currentMovieLiveData.value?.topMovie?.movieId
+        if (movieId == null) {
+            failCallback?.invoke(false)
+            return
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                movieRepository.likeMovie(
+                    roomId,
+                    movieId,
+                    isLeader
+                )
+                moviesCurrentBatchLiveData.nextMovie()
+            } catch (e: LoadingException) {
+                val isSevere = e.errorCode == 404
+                failCallback?.invoke(isSevere)
+            }
+        }
+    }
+
+    private suspend fun loadMovies(): List<Movie> =
+        withContext(viewModelScope.coroutineContext) {
+            matchFragmentStateMutableLiveData.postValue(MatchFragmentState.NOT_LOADED)
+            try {
+                // Requesting data
+                val data = movieRepository.getMovies(roomId)
+                matchFragmentStateMutableLiveData.postValue(MatchFragmentState.LOADED)
+                data
+            } catch (t: Throwable) {
+                // Possibly log
+                matchFragmentStateMutableLiveData.postValue(MatchFragmentState.FAILED)
+                throw RuntimeException(t)
+            }
+        }
+
+    suspend fun leaveRoomAsLeaderIfLeader() = withContext(Dispatchers.IO) {
+        if (isLeader) {
+            try {
+                roomRepository.leaveRoomAsLeader(roomId)
+            } catch (e: LoadingException) {
+                // Nothing to do...
+            }
+        }
+    }
+
+    private suspend fun checkForMatch() {
+        try {
+            val match = movieRepository.getMatchIfHas(roomId) ?: return
+            matchCallback?.invoke(match)
+        } catch (e: LoadingException) {
+            // Nothing to do...
         }
     }
 }

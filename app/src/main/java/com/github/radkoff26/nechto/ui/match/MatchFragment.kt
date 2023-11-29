@@ -1,36 +1,89 @@
 package com.github.radkoff26.nechto.ui.match
 
+import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.motion.widget.TransitionAdapter
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.github.radkoff26.base.BaseFragment
-import com.github.radkoff26.nechto.NechtoApplication
 import com.github.radkoff26.nechto.R
-import com.github.radkoff26.nechto.data.Genre
 import com.github.radkoff26.nechto.data.Movie
 import com.github.radkoff26.nechto.databinding.FragmentMatchBinding
 import com.github.radkoff26.nechto.databinding.MovieLayoutBinding
 import com.github.radkoff26.nechto.extensions.toastMessage
 import com.squareup.picasso.Picasso
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match) {
-    private lateinit var viewModel: MatchViewModel
+    private val viewModel: MatchViewModel by viewModels()
+
+    @Volatile
+    private var isLoaded = false
 
     override fun onCreateView() {
-        val dataSource = (requireActivity().application as NechtoApplication).movieDataSource
-        viewModel = ViewModelProvider(
-            this,
-            MatchViewModel.ViewModelFactory(dataSource)
-        )[MatchViewModel::class.java]
+        val isLeader = requireArguments().getBoolean(getString(R.string.is_leader))
+        val roomId = requireArguments().getString(getString(R.string.room_code))!!
+        viewModel.init(roomId, isLeader, this::onFailed, this::onHavingMatch)
         observeViewModel()
         binding.initUI()
+        setOnBackPressed()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.startWatchingMatch()
+    }
+
+    override fun onStop() {
+        viewModel.stopWatchingMatch()
+        super.onStop()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.leaveRoomAsLeaderIfLeader()
+        }
+    }
+
+    private fun setOnBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+
+                override fun handleOnBackPressed() {
+                    findNavController().popBackStack(R.id.home_fragment, false)
+                }
+            }
+        )
+    }
+
+    private fun onHavingMatch(movie: Movie) {
+        CoroutineScope(Dispatchers.Main).launch {
+            findNavController().navigate(R.id.from_match_to_result, Bundle().apply {
+                putString(getString(R.string.movie_title), movie.name)
+                putString(getString(R.string.poster_url), movie.poster)
+            })
+        }
+    }
+
+    private fun onFailed(isSevere: Boolean) {
+        requireContext().toastMessage(getString(R.string.unexpected_error))
+        if (isSevere) {
+            findNavController().popBackStack(R.id.home_fragment, false)
+        }
     }
 
     private fun observeViewModel() {
         viewModel.matchFragmentStateLiveData.observe(viewLifecycleOwner) {
             if (it == MatchFragmentState.FAILED) {
-                requireContext().toastMessage("Failed to load movie!")
+                requireContext().toastMessage(getString(R.string.failed_to_load_movie))
             } else if (it == MatchFragmentState.NOT_LOADED) {
                 binding.rootSkeleton.showSkeleton()
             }
@@ -72,7 +125,7 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
         }
         movieTitle.text = movie.name
         movieDescription.text = movie.description
-        movieGenres.text = movie.genres.joinToString(separator = " - ", transform = Genre::name)
+        movieGenres.text = movie.genres.joinToString(separator = " - ")
         movieScore.text = movie.score.toString()
     }
 
@@ -82,24 +135,30 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
                 when (currentId) {
                     R.id.offScreenLike -> {
                         viewModel.likeMovie()
-                        setSkeletonLoadingAndResetAnimation()
+                        setSkeletonLoadingAndResetAnimationDelayed()
                     }
                     R.id.offScreenDislike -> {
                         viewModel.dislikeMovie()
-                        setSkeletonLoadingAndResetAnimation()
+                        setSkeletonLoadingAndResetAnimationDelayed()
                     }
                 }
             }
         })
     }
 
-    private fun FragmentMatchBinding.setSkeletonLoadingAndResetAnimation() {
-        topCard.showSkeleton()
+    private fun FragmentMatchBinding.setSkeletonLoadingAndResetAnimationDelayed() {
         matchMotionLayout.progress = 0f
         matchMotionLayout.setTransition(R.id.steady, R.id.dislike)
+        val bottomMovie = viewModel.currentMovieLiveData.value?.bottomMovie
+        if (bottomMovie != null) {
+            bindMovie(MoviesPair(bottomMovie, null))
+        } else {
+            topCard.showSkeleton()
+        }
     }
 
     private fun FragmentMatchBinding.showOriginal() {
+        isLoaded = true
         topCard.showOriginal()
     }
 

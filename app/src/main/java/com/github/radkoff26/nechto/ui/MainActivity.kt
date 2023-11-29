@@ -1,9 +1,11 @@
-package com.github.radkoff26.nechto
+package com.github.radkoff26.nechto.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.github.radkoff26.nechto.ui.genre_choice.GenreChoiceFragment
+import androidx.appcompat.app.AppCompatActivity
+import com.github.radkoff26.nechto.R
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

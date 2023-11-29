@@ -16,6 +16,23 @@
             app:enterAnim="@anim/fragment_appear_animation"
             app:exitAnim="@anim/fragment_vanish_animation"
             app:popExitAnim="@anim/fragment_pop_vanish_animation" />
+
+        <action
+            android:id="@+id/from_home_to_match"
+            app:destination="@id/match_fragment"
+            app:enterAnim="@anim/fragment_appear_animation"
+            app:exitAnim="@anim/fragment_vanish_animation"
+            app:popExitAnim="@anim/fragment_pop_vanish_animation">
+
+            <argument
+                android:name="@string/room_code"
+                app:argType="string" />
+
+            <argument
+                android:name="@string/is_leader"
+                android:defaultValue="false"
+                app:argType="boolean" />
+        </action>
     </fragment>
 
     <fragment
@@ -28,7 +45,12 @@
             app:destination="@id/room_fragment"
             app:enterAnim="@anim/fragment_appear_animation"
             app:exitAnim="@anim/fragment_vanish_animation"
-            app:popExitAnim="@anim/fragment_pop_vanish_animation" />
+            app:popExitAnim="@anim/fragment_pop_vanish_animation">
+
+            <argument
+                android:name="@string/room_code"
+                app:argType="string" />
+        </action>
     </fragment>
 
     <fragment
@@ -36,17 +58,73 @@
         android:name="com.github.radkoff26.nechto.ui.room.RoomFragment"
         tools:layout="@layout/fragment_room">
 
+        <argument
+            android:name="@string/room_code"
+            app:argType="string" />
+
         <action
             android:id="@+id/from_room_to_match"
             app:destination="@id/match_fragment"
             app:enterAnim="@anim/fragment_appear_animation"
             app:exitAnim="@anim/fragment_vanish_animation"
-            app:popExitAnim="@anim/fragment_pop_vanish_animation" />
+            app:popExitAnim="@anim/fragment_pop_vanish_animation">
+
+            <argument
+                android:name="@string/room_code"
+                app:argType="string" />
+
+            <argument
+                android:name="@string/is_leader"
+                android:defaultValue="true"
+                app:argType="boolean" />
+        </action>
     </fragment>
 
     <fragment
         android:id="@+id/match_fragment"
         android:name="com.github.radkoff26.nechto.ui.match.MatchFragment"
-        tools:layout="@layout/fragment_match" />
+        tools:layout="@layout/fragment_match">
+
+        <argument
+            android:name="@string/room_code"
+            app:argType="string" />
+
+        <argument
+            android:name="@string/is_leader"
+            android:defaultValue="false"
+            app:argType="boolean" />
+
+        <action
+            android:id="@+id/from_match_to_result"
+            app:destination="@id/match_result_fragment">
+
+            <argument
+                android:name="@string/poster_url"
+                app:argType="string" />
+
+            <argument
+                android:name="@string/movie_title"
+                app:argType="string" />
+
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/match_result_fragment"
+        android:name="com.github.radkoff26.nechto.ui.result.MatchResultFragment"
+        tools:layout="@layout/fragment_match">
+
+        <argument
+            android:name="@string/poster_url"
+            app:argType="string" />
+
+        <argument
+            android:name="@string/movie_title"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/from_result_to_home"
+            app:destination="@id/home_fragment" />
+    </fragment>
 
 </navigation>

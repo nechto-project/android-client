@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Nechto</string>
+    <string name="choose_genre">Выбрать жанры</string>
+    <string name="back_button">Кнопка назад</string>
+    <string name="hello">Привет!</string>
+    <string name="join_room">Подключиться</string>
+    <string name="start_match">Начать мэтч</string>
+    <string name="continue_text">Далее</string>
+    <string name="participants">Участники</string>
+    <string name="advice_before_play">Вы можете пригласить друзей или играть в одиночку</string>
+    <string name="room_code">Код комнаты</string>
+    <string name="poster_url">Poster Url</string>
+    <string name="room_not_exists">Комната не существует!</string>
+    <string name="code_copied">Код был скопирован в буфер обмена!</string>
+    <string name="start">Начать</string>
+    <string name="trailer">Трейлер</string>
+    <string name="reject">Не хочу</string>
+    <string name="accept">Хочу</string>
+    <string name="movie_description">Описание</string>
+    <string name="error_while_loading">Ошибка во время загрузки!</string>
+    <string name="failed_to_create_room">Не удалось подключиться к комнате!</string>
+    <string name="no_genres_chosen">Вы не выбрали жанры!</string>
+    <string name="join">Join</string>
+    <string name="is_leader">Is leader</string>
+    <string name="participants_count" formatted="true">Участники: %d/2</string>
+    <string name="match">Мэтч!</string>
+    <string name="finish">Завершить</string>
+    <string name="movie_title">Movie Title</string>
+    <string name="unexpected_error">Непредвиденная ошибка!</string>
+    <string name="failed_to_load_movie">Не удалось загрузить фильм!</string>
+</resources>
