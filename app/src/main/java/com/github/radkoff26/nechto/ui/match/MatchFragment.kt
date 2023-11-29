@@ -74,9 +74,11 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
     }
 
     private fun onFailed(isSevere: Boolean) {
-        requireContext().toastMessage(getString(R.string.unexpected_error))
-        if (isSevere) {
-            findNavController().popBackStack(R.id.home_fragment, false)
+        CoroutineScope(Dispatchers.Main).launch {
+            requireContext().toastMessage(getString(R.string.unexpected_error))
+            if (isSevere) {
+                findNavController().popBackStack(R.id.home_fragment, false)
+            }
         }
     }
 
