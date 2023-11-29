@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.github.radkoff26.base.BaseFragment
 import com.github.radkoff26.nechto.R
 import com.github.radkoff26.nechto.databinding.FragmentMatchResultBinding
+import com.github.radkoff26.nechto.extensions.toastMessage
 import com.squareup.picasso.Picasso
 
 class MatchResultFragment :
@@ -61,5 +62,6 @@ class MatchResultFragment :
                 ClipData.Item(title)
             )
         )
+        requireContext().toastMessage(getString(R.string.code_copied))
     }
 }
